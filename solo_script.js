@@ -18,7 +18,7 @@ position = document.getElementById('content');
 for(var i = 0; i < array.length; i++){
 	array[i] = calculateSTI(array);
  	newEl = document.createElement('li');
-	newText = document.createTextNode(array[i]);
+	newText = document.createTextNode(array[i][0]+", "+array[i][1]+"%, "+array[i][2]+", "+array[i][3]);
 	newEl.appendChild(newText);
 	position.appendChild(newEl);
 }
@@ -26,20 +26,24 @@ for(var i = 0; i < array.length; i++){
 function calculateSTI(array){
   var newArray = [];
 
-  newArray[0] = array[0];
+  newArray[0] = array[i][0];
 
-  var employeeNumber = array[1];
-  var baseSalary = array[2];
-  var reviewScore = array[3];
+  var employeeNumber = array[i][1];
+  var baseSalary = array[i][2];
+  var reviewScore = array[i][3];
 
-  var bonus = getBaseSTI(reviewScore) + getYearAdjustment(employeeNumber) - getIncomeAdjustment(baseSalary);
+  var bonus = getBaseSTI(reviewScore) + getYearAdjustment(employeeNumber) + getIncomeAdjustment(baseSalary);
   if(bonus > 0.13){
     bonus = 0.13;
   }
-
-  newArray[1] = bonus;
-  newArray[2] = baseSalary * (1.0 + bonus);
-  newArray[3] = baseSalary * bonus;
+  
+  newArray[1] = bonus * 100;
+  var newSalary = baseSalary * (1.0 + bonus);
+  newSalary = newSalary * 100;
+  newSalary = Math.round(newSalary);
+  newSalary = newSalary / 100;
+  newArray[2] = newSalary;
+  newArray[3] = Math.round(baseSalary * bonus);
   console.log(newArray[0] + " " + newArray[1] + " " + newArray[2] + " " + newArray[3]);
   return newArray;
 }
@@ -63,14 +67,14 @@ function getBaseSTI(reviewScore){
       basePercent = 0.10;
       break;
   }
-  return basePercent - 1;
+  return basePercent;
 }
 
 function getYearAdjustment(employeeNumber){
   var yearAdjustment = 0;
   if(employeeNumber.length == 4){
     yearAdjustment = 0.05;
-  }
+  } 
   return yearAdjustment;
 }
 
