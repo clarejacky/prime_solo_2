@@ -32,7 +32,7 @@ function calculateSTI(array){
   var baseSalary = array[i][2];
   var reviewScore = array[i][3];
 
-  var bonus = getBaseSTI(reviewScore) + getYearAdjustment(employeeNumber) + getIncomeAdjustment(baseSalary);
+  var bonus = getBaseSTI(reviewScore) + getYearAdjustment(employeeNumber) - getIncomeAdjustment(baseSalary);
   if(bonus > 0.13){
     bonus = 0.13;
   }
